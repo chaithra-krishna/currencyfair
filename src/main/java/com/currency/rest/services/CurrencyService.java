@@ -17,12 +17,15 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.currency.rest.model.CurrencyData;
+import com.currency.rest.model.HelloMessage;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,8 +48,14 @@ public class CurrencyService implements InitializingBean, Runnable {
 
 	private Queue queue = null;
 
+	@Autowired
+	private SimpMessagingTemplate template;
+
 	@RequestMapping(value = "/countries", method = RequestMethod.GET, headers = "Accept=application/json")
 	public String getMsg() {
+		HelloMessage helloMessage = new HelloMessage();
+		helloMessage.setName("test12344");
+		this.template.convertAndSend("/topic/greetings", helloMessage);
 		return "Hello World !! - Jersey 2";
 	}
 
@@ -60,7 +69,7 @@ public class CurrencyService implements InitializingBean, Runnable {
 			currencyData = mapper.readValue(string, CurrencyData.class);
 			System.out.println("currencyData = " + currencyData);
 			if (null != currencyData) {
-				//subbmitToQueue(currencyData);
+				subbmitToQueue(currencyData);
 			}
 		} catch (JsonParseException e) {
 			result = "not valid input - JsonParseException occurred";
@@ -97,6 +106,22 @@ public class CurrencyService implements InitializingBean, Runnable {
 		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		queue = session.createQueue("currencyQueue");
 		producer = session.createProducer(queue);
+
+		try {
+			MessageConsumer consumer = session.createConsumer(queue);
+
+			while (true) {
+				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
+				System.out.println("***************************************");
+				System.out.println(ObjectMessage);
+				CurrencyData currency = (CurrencyData) ObjectMessage.getObject();
+				this.template.convertAndSend("/topic/greetings", currency);
+			}
+
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public List<Object> retriveFromQueue() {
@@ -111,7 +136,6 @@ public class CurrencyService implements InitializingBean, Runnable {
 			}
 
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return objects;
@@ -126,7 +150,7 @@ public class CurrencyService implements InitializingBean, Runnable {
 
 	public void run() {
 		Session session = null;
-		//MessageProducer producer = null;
+		// MessageProducer producer = null;
 		Connection connection = null;
 		Queue queue = null;
 		try {
@@ -143,6 +167,7 @@ public class CurrencyService implements InitializingBean, Runnable {
 				System.out.println("***************************************");
 				System.out.println(ObjectMessage.getObject());
 				CurrencyData currency = (CurrencyData) ObjectMessage.getObject();
+				System.out.println(currency);
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();

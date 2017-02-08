@@ -14,9 +14,9 @@
     http://www.springframework.org/schema/task  
     http://www.springframework.org/schema/task/spring-task-4.1.xsd">
 
-	 <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+	 <!-- <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61616" />
-	</bean>
+	</bean>  -->
 
 
 	<mvc:annotation-driven />
