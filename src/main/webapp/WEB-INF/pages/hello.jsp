@@ -6,11 +6,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Spring + WebSocket Hello world</title>
-    <script src="resources/js/sockjs.js" type="text/javascript"></script>
-    <script src="resources/js/stomp.js" type="text/javascript"></script>
-    <script src="resources/js/jquery.min.js" type="text/javascript"></script>
-    <script src="resources/js/jquery-ui.js" type="text/javascript"></script>
-    <script src="resources/js/jquery.json.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" type="text/javascript"></script>
+	 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js" type="text/javascript"></script>
+    <script src="https://raw.githubusercontent.com/joewalnes/smoothie/master/smoothie.js" type="text/javascript"></script>
     <script>
         //sockJS
 alert("before start");
@@ -23,6 +25,28 @@ alert("before start");
 
             $("#recFromServer").append("<br>" + "Successful Connection to Server.!");
             alert("successfull connection to server");
+			
+			
+			var smoothie = new SmoothieChart();
+			//smoothie.streamTo(document.getElementById("mycanvas"));
+			smoothie.streamTo(document.getElementById("mycanvas"), 1000 /*delay*/); 
+			// Data
+			var line1 = new TimeSeries();
+			var line2 = new TimeSeries();
+			
+			
+			// Add a random value to each line every second
+setInterval(function() {
+  line1.append(new Date().getTime(), Math.random());
+  line2.append(new Date().getTime(), Math.random());
+}, 1000);
+// Add to SmoothieChart
+smoothie.addTimeSeries(line1);
+smoothie.addTimeSeries(line2);
+
+
+
+
             //After successful connection，Set the address of the receiving server and the processing method
             stompClient.subscribe('/topic/greetings', function (greeting) {
                 var content = JSON.parse(greeting.body).content;
@@ -48,5 +72,8 @@ Enter a name:
 <div id="recFromServer"></div>
 Test Method:
 Open the page with two browsers, and then a page to submit information, it can receive the server data, while another page can also receive data sent to the server.
+
+	<canvas id="mycanvas" width="400" height="100"></canvas>
+
 </body>
 </html>

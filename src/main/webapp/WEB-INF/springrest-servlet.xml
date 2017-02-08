@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:websocket="http://www.springframework.org/schema/websocket"
-    xmlns:task="http://www.springframework.org/schema/task"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
 
     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
     http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd
@@ -22,22 +21,15 @@
 
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com.currency.rest" />
-	<!-- <bean
-		class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
-		<property name="maxTextMessageBufferSize" value="8192" />
-		<property name="maxBinaryMessageBufferSize" value="8192" />
-	</bean> -->
+	<!-- <bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean"> 
+		<property name="maxTextMessageBufferSize" value="8192" /> <property name="maxBinaryMessageBufferSize" 
+		value="8192" /> </bean> -->
 
-	<!-- <websocket:handlers>
-		<websocket:mapping path="/myHandler" handler="myHandler" />
-		<websocket:sockjs />
-		<websocket:handshake-interceptors> <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/> 
-			</websocket:handshake-interceptors>
-	</websocket:handlers>
-
-	<bean id="myHandler" class="org.springframework.samples.MyHandler" />
- -->
-	<bean id="viewResolver"
+	<!-- <websocket:handlers> <websocket:mapping path="/myHandler" handler="myHandler" 
+		/> <websocket:sockjs /> <websocket:handshake-interceptors> <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/> 
+		</websocket:handshake-interceptors> </websocket:handlers> <bean id="myHandler" 
+		class="org.springframework.samples.MyHandler" /> -->
+	 <bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
 			<value>/WEB-INF/pages/</value>
@@ -45,5 +37,5 @@
 		<property name="suffix">
 			<value>.jsp</value>
 		</property>
-	</bean>
+	</bean> 
 </beans>  

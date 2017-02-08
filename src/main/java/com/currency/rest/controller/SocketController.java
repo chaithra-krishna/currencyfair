@@ -31,7 +31,25 @@ public class SocketController {
 
 	@RequestMapping("/getmessage")
 	public String getMessage() {
-		System.out.println("************inside hello*****************");
+		System.out.println("************inside getMessage*****************");
 		return "temp";
+	}
+
+	@RequestMapping("/test")
+	public String test() {
+		System.out.println("************inside test*****************");
+		return "test";
+	}
+
+	@RequestMapping("/test1")
+	public String test1() {
+		System.out.println("************inside test1*****************");
+		return "hello";
+	}
+
+	@RequestMapping("/test2")
+	public String test2() {
+		System.out.println("************inside test2*****************");
+		return "index";
 	}
 }

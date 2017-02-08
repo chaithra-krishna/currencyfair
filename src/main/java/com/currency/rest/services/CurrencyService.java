@@ -4,10 +4,12 @@
 package com.currency.rest.services;
 
 import java.io.IOException;
+import java.util.List;
 
 //import javax.inject.Inject;
 //import javax.jms.Connection;
 //import javax.jms.JMSException;
+//import javax.jms.MessageConsumer;
 //import javax.jms.MessageProducer;
 //import javax.jms.ObjectMessage;
 //import javax.jms.Queue;
@@ -30,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-public class CurrencyService implements InitializingBean {
+public class CurrencyService implements InitializingBean, Runnable {
 
 //	@Inject
 //	private ActiveMQConnectionFactory jmsConnectionFactory;
@@ -40,6 +42,8 @@ public class CurrencyService implements InitializingBean {
 //	private MessageProducer producer = null;
 //
 //	private Connection connection = null;
+//
+//	private Queue queue = null;
 
 	@RequestMapping(value = "/countries", method = RequestMethod.GET, headers = "Accept=application/json")
 	public String getMsg() {
@@ -76,9 +80,9 @@ public class CurrencyService implements InitializingBean {
 
 //	public void subbmitToQueue(CurrencyData currencyData) {
 //		try {
-//			ObjectMessage message = session.createObjectMessage(currencyData);
-//			producer.send(message);
-//			//connection.stop();
+//			ObjectMessage ObjectMessage = session.createObjectMessage(currencyData);
+//			producer.send(ObjectMessage);
+//			// connection.stop();
 //			System.out.println("Uploaded to queue");
 //		} catch (JMSException e) {
 //			System.out.println(e);
@@ -91,8 +95,57 @@ public class CurrencyService implements InitializingBean {
 //		connection = jmsConnectionFactory.createConnection();
 //		connection.start();
 //		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-//		Queue queue = session.createQueue("currencyQueue");
+//		queue = session.createQueue("currencyQueue");
 //		producer = session.createProducer(queue);
 	}
 
+//	public List<Object> retriveFromQueue() {
+//		List<Object> objects = null;
+//		try {
+//			MessageConsumer consumer = session.createConsumer(queue);
+//
+//			while (true) {
+//				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
+//				System.out.println("***************************************");
+//				System.out.println(ObjectMessage);
+//			}
+//
+//		} catch (JMSException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return objects;
+//	}
+
+	public static void main(String[] args) {
+
+		Runnable runable = new CurrencyService();
+		Thread t = new Thread(runable);
+		t.start();
+	}
+
+	public void run() {
+//		Session session = null;
+//		//MessageProducer producer = null;
+//		Connection connection = null;
+//		Queue queue = null;
+//		try {
+//			ActiveMQConnectionFactory jmsConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+//			connection = jmsConnectionFactory.createConnection();
+//			connection.start();
+//			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+//			queue = session.createQueue("currencyQueue");
+//
+//			MessageConsumer consumer = session.createConsumer(queue);
+//
+//			while (true) {
+//				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
+//				System.out.println("***************************************");
+//				System.out.println(ObjectMessage.getObject());
+//				CurrencyData currency = (CurrencyData) ObjectMessage.getObject();
+//			}
+//		} catch (JMSException e) {
+//			e.printStackTrace();
+//		}
+	}
 }
