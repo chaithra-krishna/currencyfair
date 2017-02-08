@@ -35,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-public class CurrencyService implements InitializingBean, Runnable {
+public class CurrencyService implements InitializingBean {
 
 	@Inject
 	private ActiveMQConnectionFactory jmsConnectionFactory;
@@ -107,21 +107,6 @@ public class CurrencyService implements InitializingBean, Runnable {
 		queue = session.createQueue("currencyQueue");
 		producer = session.createProducer(queue);
 
-		try {
-			MessageConsumer consumer = session.createConsumer(queue);
-
-			while (true) {
-				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
-				System.out.println("***************************************");
-				System.out.println(ObjectMessage);
-				CurrencyData currency = (CurrencyData) ObjectMessage.getObject();
-				this.template.convertAndSend("/topic/greetings", currency);
-			}
-
-		} catch (JMSException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public List<Object> retriveFromQueue() {
@@ -143,9 +128,9 @@ public class CurrencyService implements InitializingBean, Runnable {
 
 	public static void main(String[] args) {
 
-		Runnable runable = new CurrencyService();
-		Thread t = new Thread(runable);
-		t.start();
+		//Runnable runable = new CurrencyService();
+		//Thread t = new Thread(runable);
+		//t.start();
 	}
 
 	public void run() {
