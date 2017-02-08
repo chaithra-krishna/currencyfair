@@ -60,7 +60,7 @@ public class CurrencyService implements InitializingBean, Runnable {
 			currencyData = mapper.readValue(string, CurrencyData.class);
 			System.out.println("currencyData = " + currencyData);
 			if (null != currencyData) {
-				subbmitToQueue(currencyData);
+				//subbmitToQueue(currencyData);
 			}
 		} catch (JsonParseException e) {
 			result = "not valid input - JsonParseException occurred";

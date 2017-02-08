@@ -23,10 +23,9 @@ public class SocketController {
 	@MessageMapping("/greeting")
 	@SendTo("/topic/greetings")
 	@RequestMapping("/hello")
-	public Greeting greeting(HelloMessage message) throws Exception {
+	public String greeting(HelloMessage message) throws Exception {
 		System.out.println("MessageController====================================>Client connection");
-		return new Greeting("[" + (new Date()) + "]  The server returns: Hello, the client enters the message < "
-				+ message.getName() + ">");
+		return "";
 	}
 
 	@RequestMapping("/getmessage")
