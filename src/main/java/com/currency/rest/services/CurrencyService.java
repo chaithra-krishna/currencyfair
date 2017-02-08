@@ -6,16 +6,16 @@ package com.currency.rest.services;
 import java.io.IOException;
 import java.util.List;
 
-//import javax.inject.Inject;
-//import javax.jms.Connection;
-//import javax.jms.JMSException;
-//import javax.jms.MessageConsumer;
-//import javax.jms.MessageProducer;
-//import javax.jms.ObjectMessage;
-//import javax.jms.Queue;
-//import javax.jms.Session;
-//
-//import org.apache.activemq.ActiveMQConnectionFactory;
+import javax.inject.Inject;
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,16 +34,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 public class CurrencyService implements InitializingBean, Runnable {
 
-//	@Inject
-//	private ActiveMQConnectionFactory jmsConnectionFactory;
-//
-//	private Session session = null;
-//
-//	private MessageProducer producer = null;
-//
-//	private Connection connection = null;
-//
-//	private Queue queue = null;
+	@Inject
+	private ActiveMQConnectionFactory jmsConnectionFactory;
+
+	private Session session = null;
+
+	private MessageProducer producer = null;
+
+	private Connection connection = null;
+
+	private Queue queue = null;
 
 	@RequestMapping(value = "/countries", method = RequestMethod.GET, headers = "Accept=application/json")
 	public String getMsg() {
@@ -60,7 +60,7 @@ public class CurrencyService implements InitializingBean, Runnable {
 			currencyData = mapper.readValue(string, CurrencyData.class);
 			System.out.println("currencyData = " + currencyData);
 			if (null != currencyData) {
-				//subbmitToQueue(currencyData);
+				subbmitToQueue(currencyData);
 			}
 		} catch (JsonParseException e) {
 			result = "not valid input - JsonParseException occurred";
@@ -78,44 +78,44 @@ public class CurrencyService implements InitializingBean, Runnable {
 
 	}
 
-//	public void subbmitToQueue(CurrencyData currencyData) {
-//		try {
-//			ObjectMessage ObjectMessage = session.createObjectMessage(currencyData);
-//			producer.send(ObjectMessage);
-//			// connection.stop();
-//			System.out.println("Uploaded to queue");
-//		} catch (JMSException e) {
-//			System.out.println(e);
-//			e.printStackTrace();
-//		}
-//	}
+	public void subbmitToQueue(CurrencyData currencyData) {
+		try {
+			ObjectMessage ObjectMessage = session.createObjectMessage(currencyData);
+			producer.send(ObjectMessage);
+			// connection.stop();
+			System.out.println("Uploaded to queue");
+		} catch (JMSException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+	}
 
 	public void afterPropertiesSet() throws Exception {
 		System.out.println("**************************************************************************************");
-//		connection = jmsConnectionFactory.createConnection();
-//		connection.start();
-//		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-//		queue = session.createQueue("currencyQueue");
-//		producer = session.createProducer(queue);
+		connection = jmsConnectionFactory.createConnection();
+		connection.start();
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		queue = session.createQueue("currencyQueue");
+		producer = session.createProducer(queue);
 	}
 
-//	public List<Object> retriveFromQueue() {
-//		List<Object> objects = null;
-//		try {
-//			MessageConsumer consumer = session.createConsumer(queue);
-//
-//			while (true) {
-//				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
-//				System.out.println("***************************************");
-//				System.out.println(ObjectMessage);
-//			}
-//
-//		} catch (JMSException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return objects;
-//	}
+	public List<Object> retriveFromQueue() {
+		List<Object> objects = null;
+		try {
+			MessageConsumer consumer = session.createConsumer(queue);
+
+			while (true) {
+				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
+				System.out.println("***************************************");
+				System.out.println(ObjectMessage);
+			}
+
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return objects;
+	}
 
 	public static void main(String[] args) {
 
@@ -125,27 +125,27 @@ public class CurrencyService implements InitializingBean, Runnable {
 	}
 
 	public void run() {
-//		Session session = null;
-//		//MessageProducer producer = null;
-//		Connection connection = null;
-//		Queue queue = null;
-//		try {
-//			ActiveMQConnectionFactory jmsConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-//			connection = jmsConnectionFactory.createConnection();
-//			connection.start();
-//			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-//			queue = session.createQueue("currencyQueue");
-//
-//			MessageConsumer consumer = session.createConsumer(queue);
-//
-//			while (true) {
-//				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
-//				System.out.println("***************************************");
-//				System.out.println(ObjectMessage.getObject());
-//				CurrencyData currency = (CurrencyData) ObjectMessage.getObject();
-//			}
-//		} catch (JMSException e) {
-//			e.printStackTrace();
-//		}
+		Session session = null;
+		//MessageProducer producer = null;
+		Connection connection = null;
+		Queue queue = null;
+		try {
+			ActiveMQConnectionFactory jmsConnectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+			connection = jmsConnectionFactory.createConnection();
+			connection.start();
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			queue = session.createQueue("currencyQueue");
+
+			MessageConsumer consumer = session.createConsumer(queue);
+
+			while (true) {
+				ObjectMessage ObjectMessage = (javax.jms.ObjectMessage) consumer.receive();
+				System.out.println("***************************************");
+				System.out.println(ObjectMessage.getObject());
+				CurrencyData currency = (CurrencyData) ObjectMessage.getObject();
+			}
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
 	}
 }
