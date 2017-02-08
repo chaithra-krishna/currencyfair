@@ -1,6 +1,6 @@
 <html>
 <body>
-<h2>Hello World!</h2>
-<a href="hello.html">click here</a>
+	<h2>Welcome to Currency Report</h2>
+	<a href="currencyReport">click here to view the report</a>
 </body>
 </html>

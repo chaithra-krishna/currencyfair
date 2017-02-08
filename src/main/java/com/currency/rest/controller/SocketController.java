@@ -3,8 +3,8 @@
  */
 package com.currency.rest.controller;
 
-import java.util.Date;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -14,42 +14,23 @@ import com.currency.rest.model.Greeting;
 import com.currency.rest.model.HelloMessage;
 
 /**
+ * This class is the front controller. It handles all the requests.
+ * 
  * @author Macbook pro
- *
  */
 @Controller
 public class SocketController {
 
+	/**
+	 * LOGGER for SocketController class.
+	 */
+	public static Logger LOG = LoggerFactory.getLogger(SocketController.class);
+
 	@MessageMapping("/greeting")
 	@SendTo("/topic/greetings")
-	@RequestMapping("/hello")
-	public Greeting greeting(HelloMessage message) throws Exception {
-		System.out.println("MessageController====================================>Client connection");
-		return new Greeting("[" + (new Date()) + "]  The server returns: Hello, the client enters the message < "
-				+ message.getName() + ">");
-	}
-
-	@RequestMapping("/getmessage")
-	public String getMessage() {
-		System.out.println("************inside getMessage*****************");
-		return "temp";
-	}
-
-	@RequestMapping("/test")
-	public String test() {
-		System.out.println("************inside test*****************");
-		return "test";
-	}
-
-	@RequestMapping("/test1")
-	public String test1() {
-		System.out.println("************inside test1*****************");
-		return "hello";
-	}
-
-	@RequestMapping("/test2")
-	public String test2() {
-		System.out.println("************inside test2*****************");
-		return "index";
+	@RequestMapping("/currencyReport")
+	public Greeting getReport(HelloMessage message) throws Exception {
+		LOG.info("SocketController : getReport : start");
+		return new Greeting("Welcome");
 	}
 }
