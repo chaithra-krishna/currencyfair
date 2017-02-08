@@ -5,15 +5,15 @@ package com.currency.rest.services;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.Session;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
+//import javax.inject.Inject;
+//import javax.jms.Connection;
+//import javax.jms.JMSException;
+//import javax.jms.MessageProducer;
+//import javax.jms.ObjectMessage;
+//import javax.jms.Queue;
+//import javax.jms.Session;
+//
+//import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +32,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 public class CurrencyService implements InitializingBean {
 
-	@Inject
-	private ActiveMQConnectionFactory jmsConnectionFactory;
-
-	private Session session = null;
-
-	private MessageProducer producer = null;
-
-	private Connection connection = null;
+//	@Inject
+//	private ActiveMQConnectionFactory jmsConnectionFactory;
+//
+//	private Session session = null;
+//
+//	private MessageProducer producer = null;
+//
+//	private Connection connection = null;
 
 	@RequestMapping(value = "/countries", method = RequestMethod.GET, headers = "Accept=application/json")
 	public String getMsg() {
@@ -56,7 +56,7 @@ public class CurrencyService implements InitializingBean {
 			currencyData = mapper.readValue(string, CurrencyData.class);
 			System.out.println("currencyData = " + currencyData);
 			if (null != currencyData) {
-				subbmitToQueue(currencyData);
+				//subbmitToQueue(currencyData);
 			}
 		} catch (JsonParseException e) {
 			result = "not valid input - JsonParseException occurred";
@@ -74,25 +74,25 @@ public class CurrencyService implements InitializingBean {
 
 	}
 
-	public void subbmitToQueue(CurrencyData currencyData) {
-		try {
-			ObjectMessage message = session.createObjectMessage(currencyData);
-			producer.send(message);
-			//connection.stop();
-			System.out.println("Uploaded to queue");
-		} catch (JMSException e) {
-			System.out.println(e);
-			e.printStackTrace();
-		}
-	}
+//	public void subbmitToQueue(CurrencyData currencyData) {
+//		try {
+//			ObjectMessage message = session.createObjectMessage(currencyData);
+//			producer.send(message);
+//			//connection.stop();
+//			System.out.println("Uploaded to queue");
+//		} catch (JMSException e) {
+//			System.out.println(e);
+//			e.printStackTrace();
+//		}
+//	}
 
 	public void afterPropertiesSet() throws Exception {
 		System.out.println("**************************************************************************************");
-		connection = jmsConnectionFactory.createConnection();
-		connection.start();
-		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		Queue queue = session.createQueue("currencyQueue");
-		producer = session.createProducer(queue);
+//		connection = jmsConnectionFactory.createConnection();
+//		connection.start();
+//		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+//		Queue queue = session.createQueue("currencyQueue");
+//		producer = session.createProducer(queue);
 	}
 
 }
